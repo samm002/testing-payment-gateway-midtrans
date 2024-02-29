@@ -20,4 +20,23 @@ class Donation extends Model
       'payment_method',
       'campaign_id'
     ];
+
+    public function campaign()
+    {
+      return $this->belongsTo(Campaign::class);
+    }
+
+    public function transaction()
+    {
+      return $this->hasOne(Transaction::class);
+    }
+
+    public function getPaymentStatusAttribute()
+    {
+        // Get the latest transaction associated with the donation
+        $latestTransaction = $this->transactions()->latest()->first();
+
+        // Return the payment status if a transaction exists
+        return $latestTransaction ? $latestTransaction->payment_status : 'pending';
+    }
 }

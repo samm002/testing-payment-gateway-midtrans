@@ -12,17 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->string('payment_method');
-            $table->enum('status', ['unpaid', 'pending', 'paid']);
-            $table->date('transaction_success_date');
-
-            // $table->uuid('donation_id');
-            // $table->foreign('donation_id')->references('id')->on('donations');
-
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users')->nullable();
-            $table->timestamps();
+          $table->uuid('id')->primary();
+          $table->enum('status', ['unpaid', 'pending', 'paid', 'denied', 'expired', 'canceled'])->nullable();
+          $table->string('payment_method')->nullable();
+          $table->date('transaction_success_date')->nullable();
+          $table->uuid('donation_id');
+          $table->foreign('donation_id')->references('id')->on('donations');
+            
+          $table->timestamps();
         });
     }
 

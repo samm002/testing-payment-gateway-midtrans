@@ -2,7 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,4 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/payment-callback', [DonationController::class, 'paymentCallback'])->name('paymentCallback');
+Route::apiResource('/campaign', CampaignController::class);
+Route::delete('/donation/deleteAll', [DonationController::class, 'deleteAll']);
+Route::apiResource('/donation', DonationController::class);
+Route::post('/payment-callback', [TransactionController::class, 'paymentCallback'])->name('paymentCallback');

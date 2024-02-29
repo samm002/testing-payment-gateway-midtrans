@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\CampaignController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,5 @@ Route::get('/', [DonationController::class, 'index'])->name('index');
 
 Route::post('/donate', [DonationController::class, 'donate'])->name('donate');
 Route::get('/invoice/{id}', [DonationController::class, 'invoice'])->name('invoice');
+
+// Route::resource('campaign', CampaignController::class);

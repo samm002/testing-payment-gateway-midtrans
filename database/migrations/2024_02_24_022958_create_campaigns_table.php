@@ -13,14 +13,14 @@ return new class extends Migration
     {
         Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->enum('campaign_type', ['kemanusiaan', 'kesehatan', 'pendidikan', 'tanggap bencana']);
+            $table->string('name')->unique();
+            $table->enum('type', ['kemanusiaan', 'kesehatan', 'pendidikan', 'tanggap bencana']);
             $table->decimal('current_donation', 12, 2)->default(0);
             $table->decimal('target_donation', 12, 2);
             $table->date('start_date');
             $table->date('end_date');
             $table->text('description')->nullable();
-            $table->string('campaign_photo')->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }
