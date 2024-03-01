@@ -10,19 +10,18 @@ Show All Campaign
   @forelse ($campaign as $item)
   <div class="col-4 d-flex my-3">
     <div class="card h-100 flex-fill">
-      <img src="{{ asset('assets/img/campaign/campaign_photo/' . $item->photo) }}" class="card-img-top p-3" alt="Gambar campaign {{ $item->judul }}"
+      <img src="{{ asset('assets/img/campaign/' . $item->photo) }}" class="card-img-top p-3" alt="Gambar campaign {{ $item->judul }}"
       style="width: 100%;
             height: 25vw;
             object-fit: cover;">
       <div class="card-body">
-        <h5 class="card-title mx-auto">{{$item->name}} - ({{$item->tahun_terbit}})</h5><br>
+        <h5 class="card-title mx-auto">{{$item->name}})</h5><br>
         <span class="badge badge-success">{{ $item->type }}</span>
-        <p class="card-text">{{ $item->current_donation }}</p>
-        <p class="card-text">{{ $item->target_donation }}</p>
-        <p class="card-text">{{ $item->start_date }}</p>
-        <p class="card-text">{{ $item->end_date }}</p>
-        <p class="card-text">{{ $item->description }}</p>
-        <p class="card-text">{{ $item->description }}</p>
+        <p class="card-text"> <b>Donasi Terkumpul     : </b>{{$campaign->current_donation}}</p>
+        <p class="card-text"> <b>Target Donasi        : </b>{{$campaign->target_donation}}</p>
+        <p class="card-text"> <b>Tanggal Mulai Donasi : </b>{{$campaign->start_date}}</p>
+        <p class="card-text"> <b>Tanggal Akhir Donasi : </b>{{$campaign->end_date}}</p>
+        <p class="card-text"> <b>Detail Donasi        : </b>{{$campaign->description}}</p>
       </div>
         <div style="margin-bottom: 15px; margin-left: 15px;">
           <form action="/campaign/{{$item->id}}" method="POST">

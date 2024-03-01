@@ -21,7 +21,7 @@ return new class extends Migration
       $table->enum('status', ['unpaid', 'pending', 'paid', 'denied', 'expired', 'canceled']);
       $table->string('payment_method')->nullable();
       $table->uuid('campaign_id');
-      $table->foreign('campaign_id')->references('id')->on('campaigns');
+      $table->foreign('campaign_id')->references('id')->on('campaigns')->onDelete('cascade');
       $table->timestamps();
     });
   }

@@ -18,20 +18,8 @@ class DonationController extends Controller
      */
     public function index()
     {
-      $donation = Donation::all();
-      try {
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Get all donation success',
-            'data' => $donation,
-          ], 200);
-      } catch (\Exception $e) {
-        return response()->json([
-          'status' => 'error',
-          'message' => 'Get all donation failed',
-          'error' => $e->getMessage(),
-        ], 500);
-      }
+      $campaign = Campaign::all();
+      return view('campaign.showAllCampaigns', ['campaign' => $campaign]);
     }
 
     /**
