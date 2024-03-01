@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Campaign;
 use App\Models\Donation;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -44,9 +45,17 @@ class DonationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function donate(Request $request, $id)
     {
+      $campaign = Campaign::find($id);
+      if (!$campaign) {
+        return response()->json([
+          'status' => 'error',
+          'message' => 'Campaign not found with the given ID',
+        ], 404);
+      }
       $data = $request->only('email', 'donation_amount', 'donation_message');
+      $data['campaign_id'] = $campaign->id;
       $data['donation_date'] = Carbon::now();
       $data['status'] = 'unpaid';
 
@@ -54,8 +63,9 @@ class DonationController extends Controller
         'email' => ['required', 'string', 'email', 'max:255'],
         'donation_amount' => ['required', 'numeric'],
         'donation_message' => ['nullable', 'string'],
-        'donation_date' => ['nullable', 'date'],
-        'status' => ['nullable'],
+        'donation_date' => ['required', 'date'],
+        'status' => ['required'],
+        'campaign_id' => ['required', 'uuid'],
       ]);
 
       if ($validator->fails()) {
@@ -72,9 +82,9 @@ class DonationController extends Controller
         ]);
 
         Config::$serverKey = config('midtrans.server_key');
-        Config::$isProduction = false;
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
+        Config::$isProduction = config('midtrans.isProduction');
+        Config::$isSanitized = config('midtrans.isSanitized');
+        Config::$is3ds = config('midtrans.is3ds');
 
         $params = array(
           'transaction_details' => array(
@@ -100,7 +110,7 @@ class DonationController extends Controller
       } catch (\Exception $e) {
         return response()->json([
           'status' => 'error',
-          'message' => 'Failed tocreate donation',
+          'message' => 'Failed to create donation',
           'error' => $e->getMessage(),
         ], 500);
       }

@@ -27,11 +27,13 @@ class TransactionController extends Controller
       if($transaction_status == 'capture') {
         if ($type == 'credit_card'){
           if($fraud == 'accept'){
+            $transaction->update(['transaction_success_date' => Carbon::now()]);
             $transaction->update(['status' => 'paid']);
             $transaction->update(['payment_method' => $type]);
           }
         }
       } else if($transaction_status == 'settlement') {
+        $transaction->update(['transaction_success_date' => Carbon::now()]);
         $transaction->update(['status' => 'paid']);
         $transaction->update(['payment_method' => $type]);
       } else if($transaction_status == 'pending') {

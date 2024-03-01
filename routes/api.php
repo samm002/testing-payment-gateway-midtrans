@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('/campaign', CampaignController::class);
+Route::post('/donation/donate/{campaign_id}', [DonationController::class, 'donate'])->name('donate');
 Route::delete('/donation/deleteAll', [DonationController::class, 'deleteAll']);
 Route::apiResource('/donation', DonationController::class);
 Route::post('/payment-callback', [TransactionController::class, 'paymentCallback'])->name('paymentCallback');

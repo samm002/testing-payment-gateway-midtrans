@@ -20,9 +20,8 @@ return new class extends Migration
       $table->timestamp('donation_date')->nullable();
       $table->enum('status', ['unpaid', 'pending', 'paid', 'denied', 'expired', 'canceled']);
       $table->string('payment_method')->nullable();
-
-      // $table->unsignedBigInteger('campaign_id');
-      // $table->foreign('campaign_id')->references('id')->on('campaigns');
+      $table->uuid('campaign_id');
+      $table->foreign('campaign_id')->references('id')->on('campaigns');
       $table->timestamps();
     });
   }

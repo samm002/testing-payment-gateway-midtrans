@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('campaigns', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name')->unique();
             $table->enum('type', ['kemanusiaan', 'kesehatan', 'pendidikan', 'tanggap bencana']);
             $table->decimal('current_donation', 12, 2)->default(0);

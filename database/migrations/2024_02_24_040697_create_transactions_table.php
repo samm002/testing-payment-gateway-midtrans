@@ -15,7 +15,7 @@ return new class extends Migration
           $table->uuid('id')->primary();
           $table->enum('status', ['unpaid', 'pending', 'paid', 'denied', 'expired', 'canceled'])->nullable();
           $table->string('payment_method')->nullable();
-          $table->date('transaction_success_date')->nullable();
+          $table->timestamp('transaction_success_date')->nullable();
           $table->uuid('donation_id');
           $table->foreign('donation_id')->references('id')->on('donations');
             
