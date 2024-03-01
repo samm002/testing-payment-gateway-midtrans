@@ -17,7 +17,7 @@ return new class extends Migration
           $table->string('payment_method')->nullable();
           $table->timestamp('transaction_success_date')->nullable();
           $table->uuid('donation_id');
-          $table->foreign('donation_id')->references('id')->on('donations');
+          $table->foreign('donation_id')->references('id')->on('donations')->onDelete('cascade');
             
           $table->timestamps();
         });

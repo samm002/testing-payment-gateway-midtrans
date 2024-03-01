@@ -86,20 +86,39 @@ class DonationController extends Controller
         Config::$isSanitized = config('midtrans.isSanitized');
         Config::$is3ds = config('midtrans.is3ds');
 
-        $params = array(
-          'transaction_details' => array(
-            'order_id' => $transaction->id,
-            'gross_amount' => $donation->donation_amount,
-          ),
-          'donation_details' => json_decode($donation['email'], true),
-          'customer_details' => array(
-            'first_name' => $donation->name ?? 'anonim',
-            'email' => $donation->email,
-          ),
+        $transaction_details = array(
+          'order_id' => $transaction->id,
+          'gross_amount' => $donation->donation_amount,
         );
 
-        $snapToken = Snap::getSnapToken($params);
-        $paymentUrl = Snap::createTransaction($params)->redirect_url;
+        $campaign_details = array(
+          array(
+            'id' => $campaign->id,
+            'price' => $donation->donation_amount,
+            'quantity' => 1,
+            'name' => $campaign->name,
+            'category'=> $campaign->type,
+          )
+        );
+
+        $customer_details = array(
+          'first_name' => $donation->name ?? 'anonim',
+          'email' => $donation->email,
+        );
+
+        $transaction_data = array(
+          'transaction_details' => $transaction_details,
+          'item_details' => $campaign_details,
+          'customer_details' => $customer_details,
+        );
+
+        $user_details = array(
+          'first_name' => "tes",
+          'gross_amount' => $donation->donation_amount,
+        );
+
+        $snapToken = Snap::getSnapToken($transaction_data);
+        $paymentUrl = Snap::createTransaction($transaction_data)->redirect_url;
 
         return response()->json([
           'status' => 'success',
